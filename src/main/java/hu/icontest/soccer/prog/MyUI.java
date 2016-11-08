@@ -33,7 +33,7 @@ public class MyUI extends UI {
         Button button = new Button("Click Me");
         button.addClickListener(new Button.ClickListener() {
             @Override
-            public void buttonClick(ClickEvent event)  {
+            public void buttonClick(ClickEvent event)  { // dummy
                 List<Players> jatekosok = null;
                 try {
                     jatekosok = DB.readPlayer();
