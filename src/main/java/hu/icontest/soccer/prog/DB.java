@@ -11,6 +11,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -150,6 +152,11 @@ public class DB {
     }
 
     public static void insertPlayer(Players player) throws SQLException {
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
         Connection conn = DriverManager.getConnection("jdbc:h2:~/probe", "sa", "");
 
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO jatekosok(vezeteknev, keresztnev, eletkor, poszt, nemzetiseg, kereset, eronlet, technika, piaci_ertek, csapat) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -165,11 +172,31 @@ public class DB {
         stmt.setString(10, player.getCurrent_team().getName());
 
         stmt.execute();
+        
         conn.commit();
         conn.close();
 
     }
 
+    public static void removePlayer(Players player) throws SQLException, IOException {
+    try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection conn = DriverManager.getConnection("jdbc:h2:~/probe", "sa", "");
+
+        PreparedStatement stmt = conn.prepareStatement("delete from jatekosok where vezeteknev = ?");
+        stmt.setString(1, player.getLast_name());
+        
+        stmt.execute();
+        
+        conn.commit();
+        conn.close();
+
+    }
+    
+    
     public static List<Players> searchPlayer() throws ClassNotFoundException, SQLException, IOException {
         Class.forName("org.h2.Driver");
         List<Players> megfelelo_jatekosok = new ArrayList<>();
