@@ -85,7 +85,10 @@ public class Coaches extends Person {
 
     @Override
     public String toString() {
+        return  "firstname=" + first_name + ", lastname="+ last_name + ", age=" + age + ", nationality=" + nationality + ", experience=" + experience + ", accomplishment=" + accomplishment + ", current_team=" + current_team + ", salary=" + salary;
+    } 
+
+    public String forName(){
         return first_name + " " + last_name;
     }
-
-}
+    }

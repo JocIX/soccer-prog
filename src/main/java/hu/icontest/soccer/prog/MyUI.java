@@ -5,12 +5,15 @@ import javax.servlet.annotation.WebServlet;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
+import com.vaadin.navigator.Navigator;
+import com.vaadin.navigator.ViewProvider;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
@@ -40,12 +43,49 @@ public class MyUI extends UI {
     private TextField value;
     // private TextField
 
+    private static final String NAVIGABLE_CONTENT = "navigableContent";
+    
+    private Panel navigableContent;
+    private ViewProvider viewProvider;
+    
+    
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        
+        
+        navigableContent = new Panel();
+        navigableContent.setSizeUndefined();
+        navigableContent.setId(NAVIGABLE_CONTENT);
+        
+        viewProvider = new MyViewProvider();
+        Navigator navigator = new Navigator(this, navigableContent);
+        navigator.addProvider(viewProvider);
+        
+        setContent(navigableContent);
+        
+        /*
         final VerticalLayout layout = new VerticalLayout(); //egymás alá kerülnek a dolgok elrendezésben a képernyőn
         layout.setMargin(true);
         setContent(layout);
 
+        Button button1 = new Button("List players");
+        button1.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(ClickEvent event){
+                try {
+                    List<Players> jatekoslista = DB.readPlayer();
+                    
+                    for (Players player : jatekoslista)
+                        layout.addComponent(new Label(player.toString()));
+                } catch (ClassNotFoundException | SQLException ex) {
+                    Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        });
+        layout.addComponent(button1);
+        
+        
+        
         firstName = new TextField("Firstname");
         lastName = new TextField("Lastname");
         age = new TextField("Age");
@@ -75,6 +115,9 @@ public class MyUI extends UI {
         layout.addComponent(horizontal2);
         layout.addComponent(vertical);
 
+        
+        
+        
         Button button = new Button("Add new player");
         button.addClickListener(new Button.ClickListener() {
             @Override
@@ -112,14 +155,7 @@ public class MyUI extends UI {
                 Players jatekos = new Players();
                 // jatekos.setFirst_name(firstName.getValue());
                 jatekos.setLast_name(lastName.getValue());
-                /* jatekos.setAge(Integer.parseInt(age.getValue()));
-                jatekos.setNationality(nationality.getValue());
-                jatekos.setPosition(position.getValue());
-                //jatekos.setCurrent_team();                
-                jatekos.setCurrent_salary(Double.parseDouble(currSal.getValue()));
-                jatekos.setFitness(Double.parseDouble(fitness.getValue()));
-                jatekos.setSkills(Double.parseDouble(skills.getValue()));
-                jatekos.setValue(Double.parseDouble(value.getValue())); */
+                
 
                 try {
                     try {
@@ -169,7 +205,7 @@ public class MyUI extends UI {
         });
         layout.addComponent(button3);
         
-        
+        */
         
         
         

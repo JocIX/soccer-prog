@@ -75,8 +75,9 @@ public class DB {
             _team.setName(team);
 
             float salary = rs.getFloat("fizetes");
-            Coaches edzo = new Coaches(first_name, last_name, age, experience, accomplishment, salary);
+            Coaches edzo = new Coaches(first_name, last_name, age,experience, accomplishment, salary);
             edzo.setCurrent_team(_team);
+            edzo.setNationality(nationality);
 
             edzok.add(edzo);
         }
@@ -134,13 +135,13 @@ public class DB {
             String nevek[] = owner.split(" ");
             _tul.setFirst_name(nevek[0]);
             _tul.setLast_name(nevek[1]);
-            
+
             String edzo = rs.getString("edzo");
             Coaches _edzo = new Coaches();
             String nev[] = edzo.split(" ");
             _edzo.setFirst_name(nev[0]);
             _edzo.setLast_name(nev[1]);
-            
+
             Teams csapat = new Teams(name, nationality, strength, squad_value, _tul, _edzo);
             //edzo.setCurrent_team(_team);
 
@@ -172,14 +173,64 @@ public class DB {
         stmt.setString(10, player.getCurrent_team().getName());
 
         stmt.execute();
-        
+
         conn.commit();
         conn.close();
 
     }
 
+    public static void insertCoach(Coaches coach) throws SQLException {
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection conn = DriverManager.getConnection("jdbc:h2:~/probe", "sa", "");
+
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO edzok(vezeteknev, keresztnev, eletkor, rutin, legjobb_eredmeny, csapat, fizetes, nemzetiseg) VALUES(?, ?, ?, ?, ?, ?, ?, ?)");
+        stmt.setString(1, coach.getLast_name());
+        stmt.setString(2, coach.getFirst_name());
+        stmt.setInt(3, coach.getAge());
+        stmt.setString(8, coach.getNationality());
+        stmt.setInt(4, coach.getExperience());
+        stmt.setString(5, coach.getAccomplishment());
+        stmt.setDouble(7, coach.getSalary());
+        stmt.setString(6, coach.getCurrent_team().getName());
+
+        stmt.execute();
+
+        conn.commit();
+        conn.close();
+
+    }
+
+    public static void InsertTeam(Teams team) throws SQLException{
+    
+        try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection conn = DriverManager.getConnection("jdbc:h2:~/probe", "sa", "");
+
+        PreparedStatement stmt = conn.prepareStatement("INSERT INTO csapatok(nev, nemzetiseg, erosseg, keret_erteke, tulajdonos, edzo) VALUES(?, ?, ?, ?, ?, ?)");
+        stmt.setString(1, team.getName());
+        stmt.setString(2, team.getNationality());
+        stmt.setDouble(3, team.getStrength());
+        stmt.setDouble(4, team.getSquadValue());
+        stmt.setString(5,team.getOwner().toString());
+        stmt.setString(6,team.getCoach().forName());
+        
+
+
+        stmt.execute();
+
+        conn.commit();
+        conn.close();
+        
+    }
     public static void removePlayer(Players player) throws SQLException, IOException {
-    try {
+        try {
             Class.forName("org.h2.Driver");
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
@@ -188,12 +239,32 @@ public class DB {
 
         PreparedStatement stmt = conn.prepareStatement("delete from jatekosok where vezeteknev = ?");
         stmt.setString(1, player.getLast_name());
-        
+
         stmt.execute();
-        
+
         conn.commit();
         conn.close();
 
+    }
+
+    public static void removeCoach(Coaches coach) throws SQLException, IOException{
+    
+    try {
+            Class.forName("org.h2.Driver");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(DB.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Connection conn = DriverManager.getConnection("jdbc:h2:~/probe", "sa", "");
+
+        PreparedStatement stmt = conn.prepareStatement("delete from edzok where vezeteknev = ?");
+        stmt.setString(1, coach.getLast_name());
+
+        stmt.execute();
+
+        conn.commit();
+        conn.close();
+
+    
     }
     
     

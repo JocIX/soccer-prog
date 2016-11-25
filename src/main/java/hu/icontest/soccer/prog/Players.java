@@ -139,6 +139,9 @@ public class Players extends Person {
 
     @Override
     public String toString() {
-        return  "last_name=" + last_name + "," + "position=" + position + ", current_team=" + current_team + ", current_salary=" + current_salary + ", fitness=" + fitness + ", skills=" + skills + ", value=" + value + '}';
+        return  "lastname=" + last_name + "," + "position=" + position + ", current team=" + current_team + ", current salary=" + current_salary + ", fitness=" + fitness + ", skills=" + skills + ", value=" + value + '}';
+ 
+    
     }
-}
+    
+    }
