@@ -16,6 +16,7 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import hu.icontest.soccer.prog.dao.PlayerDao;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -191,13 +192,9 @@ public class PlayerView extends VerticalLayout implements View {
                 jatekos.setSkills(Double.parseDouble(skills.getValue()));
                 jatekos.setValue(Double.parseDouble(value.getValue()));
 
-                try {
-                    DB.insertPlayer(jatekos);
+                    // DB.insertPlayer(jatekos);
+                    // PlayerDao.addPlayer(jatekos);
 
-                    // TODO db.insert
-                } catch (SQLException ex) {
-                    Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         });
         addComponent(button);

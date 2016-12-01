@@ -5,19 +5,14 @@
  */
 package hu.icontest.soccer.prog;
 
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
-import com.vaadin.data.Item;
-import com.vaadin.data.Property;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.ExternalResource;
-import com.vaadin.shared.ui.MultiSelectMode;
-import com.vaadin.ui.Field.ValueChangeEvent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Link;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.Table.ColumnResizeEvent;
 import com.vaadin.ui.VerticalLayout;
+import hu.icontest.soccer.prog.dao.PlayerDao;
+import hu.icontest.soccer.prog.model.Player;
 
 /**
  *
