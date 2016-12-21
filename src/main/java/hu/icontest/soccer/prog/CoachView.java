@@ -16,6 +16,9 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import hu.icontest.soccer.prog.dao.CoachDao;
+import hu.icontest.soccer.prog.model.Coach;
+import hu.icontest.soccer.prog.model.Team;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -59,32 +62,29 @@ public class CoachView extends VerticalLayout implements View {
             
                  */
                 final Table table = new Table("Coaches");
-
+                //table.addContainerProperty("ID", Long.class, null);
                 table.addContainerProperty("Firstname", String.class, null);
                 table.addContainerProperty("Lastname", String.class, null);
                 table.addContainerProperty("Age", Integer.class, null);
                 table.addContainerProperty("Nationality", String.class, null);
                 table.addContainerProperty("Experience", Integer.class, null);
                 table.addContainerProperty("Accomplishment", String.class, null);
-                table.addContainerProperty("Current team", Teams.class, null);
+                table.addContainerProperty("Current team", String.class, null);
                 table.addContainerProperty("Salary", Double.class, null);
 
-                List<Coaches> edzok = null;
-                try {
-                    edzok = DB.readCoach();
-                } catch (ClassNotFoundException | SQLException e) {
-                    // empty block
-                }
+                List<Coach> edzok = null;
+                edzok = CoachDao.readCoach();
 
-                for (int i = 0; i < edzok.size(); ++i) {   // 
+                for (int i = 0; i < edzok.size(); ++i) {   
                     List<Object> temp = new ArrayList();
-                    temp.add(edzok.get(i).first_name);
-                    temp.add(edzok.get(i).last_name);
-                    temp.add(edzok.get(i).age);
-                    temp.add(edzok.get(i).nationality);
-                    temp.add(edzok.get(i).getExperience());
+                   // temp.add(edzok.get(i).getId());
+                    temp.add(edzok.get(i).getFirstName());
+                    temp.add(edzok.get(i).getLastName());
+                    temp.add(edzok.get(i).getAge());
+                    temp.add(edzok.get(i).getNationality());
+                    temp.add(edzok.get(i).getExperience());                   
                     temp.add(edzok.get(i).getAccomplishment());
-                    temp.add(edzok.get(i).getCurrent_team());
+                    temp.add(edzok.get(i).getTeam().getName());
                     temp.add(edzok.get(i).getSalary());
                     table.addItem(temp.toArray(new Object[temp.size()]), i + 1);
                 }
@@ -93,7 +93,7 @@ public class CoachView extends VerticalLayout implements View {
             }
         });
         addComponent(button1);
-
+      
         firstName = new TextField("Firstname");
         lastName = new TextField("Lastname");
         age = new TextField("Age");
@@ -124,24 +124,23 @@ public class CoachView extends VerticalLayout implements View {
             @Override
             public void buttonClick(ClickEvent event) {
 
-                Coaches edzo = new Coaches();
-                edzo.setFirst_name(firstName.getValue());
-                edzo.setLast_name(lastName.getValue());
+                Coach edzo = new Coach();
+                edzo.setFirstName(firstName.getValue());
+                edzo.setLastName(lastName.getValue());
                 edzo.setAge(Integer.parseInt(age.getValue()));
                 edzo.setNationality(nationality.getValue());
                 edzo.setExperience(Integer.parseInt(experience.getValue()));
-                Teams team = new Teams();
-                team.setName(currentTeam.getValue());
-                edzo.setCurrent_team(team);
+                //Team team = new Team();
+               // team.setName(currentTeam.getValue());
+                //edzo.setTeam(team);
                 edzo.setAccomplishment(accomplishment.getValue());
                 edzo.setSalary(Double.parseDouble(salary.getValue()));
 
-                try {
-                    DB.insertCoach(edzo);
-
-                } catch (SQLException ex) {
-                    Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                
+                    //DB.insertCoach(edzo);
+                    CoachDao.addCoach(edzo, currentTeam.getValue());
+                    
+                
             }
         });
         addComponent(button);
@@ -151,21 +150,11 @@ public class CoachView extends VerticalLayout implements View {
             @Override
             public void buttonClick(ClickEvent event) {
 
-                Coaches edzo = new Coaches();
+                Coach edzo = new Coach();
                 // jatekos.setFirst_name(firstName.getValue());
-                edzo.setLast_name(lastName.getValue());
+                edzo.setLastName(lastName.getValue());
 
-                try {
-                    try {
-                        DB.removeCoach(edzo);
-
-                        // TODO db.insert
-                    } catch (IOException ex) {
-                        Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                CoachDao.removeCoach(edzo);
             }
         });
         addComponent(button2);

@@ -15,6 +15,10 @@ import com.vaadin.ui.Link;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import hu.icontest.soccer.prog.dao.PlayerDao;
+import hu.icontest.soccer.prog.dao.TeamDao;
+import hu.icontest.soccer.prog.model.Player;
+import hu.icontest.soccer.prog.model.Team;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -61,22 +65,20 @@ public class TeamView extends VerticalLayout implements View {
                 table.addContainerProperty("Value of squad", Double.class, null);
                 table.addContainerProperty("Owner", String.class, null);
                 table.addContainerProperty("Coach", String.class, null);
-                
-                List<Teams> csapatok = null;
-                try {
-                    csapatok = DB.readTeam();
-                } catch (ClassNotFoundException | SQLException e) {
-                    // empty block
-                    e.printStackTrace(); //Sose hagyd üresen a catch részt!!!
-                }
+
+                List<Team> csapatok = null;
+                csapatok = TeamDao.listTeam();
                 for (int i = 0; i < csapatok.size(); ++i) {   // 
                     List<Object> temp = new ArrayList();
+                    //temp.add(csapatok.get(i).getId());
                     temp.add(csapatok.get(i).getName());
                     temp.add(csapatok.get(i).getNationality());
                     temp.add(csapatok.get(i).getStrength());
                     temp.add(csapatok.get(i).getSquadValue());
-                    temp.add(csapatok.get(i).getOwner().toString());
-                    temp.add(csapatok.get(i).getCoach().forName());
+                    // temp.add(csapatok.get(i).getOwner().getLastName());
+                    temp.add("");
+                    // temp.add(csapatok.get(i).getCoach().getLastName());
+                    temp.add("");
                     table.addItem(temp.toArray(new Object[temp.size()]), i + 1);
                 }
                 table.setPageLength(table.size());
@@ -111,12 +113,12 @@ public class TeamView extends VerticalLayout implements View {
             @Override
             public void buttonClick(Button.ClickEvent event) {
 
-                Teams csapat = new Teams();
+                Team csapat = new Team();
                 csapat.setName(name.getValue());
                 csapat.setNationality(nationality.getValue());
                 csapat.setStrength(Double.parseDouble(strength.getValue()));
                 csapat.setSquadValue(Double.parseDouble(squadValue.getValue()));
-                Owners tulaj = new Owners();
+                /*Owners tulaj = new Owners();
                 String nevek[] = owner.getValue().split(" ");
                 tulaj.setFirst_name(nevek[0]);
                 tulaj.setLast_name(nevek[1]);
@@ -127,15 +129,27 @@ public class TeamView extends VerticalLayout implements View {
                 edzo.setFirst_name(nevek[0]);
                 edzo.setLast_name(nevek[1]);
                 csapat.setCoach(edzo);
+                 */
 
-                try {
-                    DB.InsertTeam(csapat);
+                TeamDao.addTeam(csapat, coach.getValue(), owner.getValue());
 
-                } catch (SQLException ex) {
-                    Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
             }
         });
+        addComponent(button);
+
+        Button button2 = new Button("Delete Team");
+        button2.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+
+                Team csapat = new Team();
+                // jatekos.setFirst_name(firstName.getValue());
+                csapat.setName(name.getValue());
+
+                TeamDao.deleteTeam(csapat);
+            }
+        });
+        addComponent(button2);
 
         Button button3 = new Button("Clear");
         button3.addClickListener(new Button.ClickListener() {
@@ -168,7 +182,6 @@ public class TeamView extends VerticalLayout implements View {
         });
         addComponent(button3);
 
-        addComponent(button);
         Link link = new Link("Home",
                 new ExternalResource("http://localhost:8080/soccer-prog/"));
         addComponent(link);

@@ -39,6 +39,18 @@ public class Owner implements Serializable {
         this.id = id;
     }
 
+    public Owner(String firstName, String lastName, String nationality, double netWorth, double competence, double control) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.nationality = nationality;
+        this.netWorth = netWorth;
+        this.competence = competence;
+        this.control = control;
+    }
+
+    
+    
+    
     public Long getId() {
         return id;
     }

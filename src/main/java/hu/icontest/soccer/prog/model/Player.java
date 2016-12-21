@@ -22,6 +22,7 @@ public class Player implements Serializable {
     private Long id;
     private String firstName;
     private String lastName;
+    private int age;
     private String nationality;
     private String position;
     @ManyToOne(fetch = FetchType.LAZY)
@@ -35,15 +36,40 @@ public class Player implements Serializable {
     public Player() {
     }
 
-    public Player(long id) {
+    public Player(Long id, String firstName, String lastName, int age, String nationality, String position, Team currentTeam, double currentSalary, double fitness, double skills, double value) {
         this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.nationality = nationality;
+        this.position = position;
+        this.currentTeam = currentTeam;
+        this.currentSalary = currentSalary;
+        this.fitness = fitness;
+        this.skills = skills;
+        this.value = value;
     }
 
-    public long getId() {
+    public Player(String firstName, String lastName, int age, String nationality, String position, double currentSalary, double fitness, double skills, double value) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.nationality = nationality;
+        this.position = position;
+        this.currentSalary = currentSalary;
+        this.fitness = fitness;
+        this.skills = skills;
+        this.value = value;
+    }
+
+    
+    
+    
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -63,36 +89,52 @@ public class Player implements Serializable {
         this.lastName = lastName;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getNationality() {
         return nationality;
     }
 
-    public void setNationality(String nat) {
-        nationality = nat;
-    }
-
-    public Team getTeam() {
-        return currentTeam;
-    }
-
-    public void setTeam(Team t) {
-        currentTeam = t;
-    }
-
-    public double getSalary() {
-        return currentSalary;
-    }
-
-    public void setSalary(double sal) {
-        currentSalary = sal;
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
     }
 
     public String getPosition() {
         return position;
     }
 
-    public void setPosition(String pos) {
-        position = pos;
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public Team getCurrentTeam() {
+        return currentTeam;
+    }
+
+    public void setCurrentTeam(Team currentTeam) {
+        this.currentTeam = currentTeam;
+    }
+
+    public double getCurrentSalary() {
+        return currentSalary;
+    }
+
+    public void setCurrentSalary(double currentSalary) {
+        this.currentSalary = currentSalary;
+    }
+
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
     }
 
     public double getSkills() {

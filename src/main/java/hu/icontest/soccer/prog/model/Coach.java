@@ -23,6 +23,7 @@ public class Coach implements Serializable {
     private String lastName;
     private int age;
     private int experience;
+    private String nationality;
     private String accomplishment;
     private double salary;
     @OneToOne(fetch = FetchType.LAZY)
@@ -36,6 +37,18 @@ public class Coach implements Serializable {
         this.id = id;
     }
 
+    public Coach(String firstName, String lastName, int age, String nationality, int experience, String accomplishment, double salary) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.age = age;
+        this.experience = experience;
+        this.nationality = nationality;
+        this.accomplishment = accomplishment;
+        this.salary = salary;
+    }
+
+    
+    
     public long getId() {
         return id;
     }
@@ -68,6 +81,14 @@ public class Coach implements Serializable {
         age = a;
     }
 
+    public String getNationality() {
+        return nationality;
+    }
+
+    public void setNationality(String nationality) {
+        this.nationality = nationality;
+    }
+
     public int getExperience() {
         return experience;
     }
@@ -87,6 +108,18 @@ public class Coach implements Serializable {
 
     public double getSalary() {
         return salary;
+    }
+
+    public void setSalary(double s) {
+        salary = s;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team t) {
+        team = t;
     }
 
     @Override

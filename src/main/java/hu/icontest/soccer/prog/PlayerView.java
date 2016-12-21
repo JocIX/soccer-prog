@@ -17,6 +17,8 @@ import com.vaadin.ui.Table;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import hu.icontest.soccer.prog.dao.PlayerDao;
+import hu.icontest.soccer.prog.model.Player;
+import hu.icontest.soccer.prog.model.Team;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -61,9 +63,6 @@ public class PlayerView extends VerticalLayout implements View {
                 } catch (ClassNotFoundException | SQLException ex) {
                     Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
                 } */
-                
-                
-                
                 final Table table = new Table("Players");
 
                 table.addContainerProperty("Firstname", String.class, null);
@@ -72,29 +71,26 @@ public class PlayerView extends VerticalLayout implements View {
                 table.addContainerProperty("Nationality", String.class, null);
                 table.addContainerProperty("Position", String.class, null);
                 table.addContainerProperty("Salary", Double.class, null);
-                table.addContainerProperty("Current team", Teams.class, null);
+                table.addContainerProperty("Current team", String.class, null);
                 table.addContainerProperty("Fitness", Double.class, null);
                 table.addContainerProperty("Skills", Double.class, null);
                 table.addContainerProperty("Value", Double.class, null);
 
-                List<Players> jatekosok = null;
-                try {
-                    jatekosok = DB.readPlayer();
-                } catch (ClassNotFoundException | SQLException e) {
-                    // empty block
-                }
-                for (int i = 0; i < jatekosok.size(); ++i) {   // 
+                List<Player> players = null;
+                players = PlayerDao.readPlayers();
+                for (int i = 0; i < players.size(); ++i) {   // 
                     List<Object> temp = new ArrayList();
-                    temp.add(jatekosok.get(i).first_name);
-                    temp.add(jatekosok.get(i).last_name);
-                    temp.add(jatekosok.get(i).age);
-                    temp.add(jatekosok.get(i).nationality);
-                    temp.add(jatekosok.get(i).getPosition());                   
-                    temp.add(jatekosok.get(i).getCurrent_salary());
-                    temp.add(jatekosok.get(i).getCurrent_team());
-                    temp.add(jatekosok.get(i).getFitness());
-                    temp.add(jatekosok.get(i).getSkills());
-                    temp.add(jatekosok.get(i).getValue());
+                    temp.add(players.get(i).getFirstName());
+                    temp.add(players.get(i).getLastName());
+                    temp.add(players.get(i).getAge());
+                    temp.add(players.get(i).getNationality());
+                    temp.add(players.get(i).getPosition());
+                    temp.add(players.get(i).getCurrentSalary());
+                    //temp.add(players.get(i).getCurrentTeam().getName());
+                    temp.add("");
+                    temp.add(players.get(i).getFitness());
+                    temp.add(players.get(i).getSkills());
+                    temp.add(players.get(i).getValue());
                     
                     // Object ide[] = new Object[temp.size()];
                     table.addItem(temp.toArray(new Object[temp.size()]), i + 1);
@@ -178,8 +174,8 @@ public class PlayerView extends VerticalLayout implements View {
             @Override
             public void buttonClick(ClickEvent event) {
 
-                Players jatekos = new Players();
-                jatekos.setFirst_name(firstName.getValue());
+                Player jatekos = new Player();
+                /* jatekos.setFirst_name(firstName.getValue());
                 jatekos.setLast_name(lastName.getValue());
                 jatekos.setAge(Integer.parseInt(age.getValue()));
                 jatekos.setNationality(nationality.getValue());
@@ -190,10 +186,19 @@ public class PlayerView extends VerticalLayout implements View {
                 jatekos.setCurrent_salary(Double.parseDouble(currSal.getValue()));
                 jatekos.setFitness(Double.parseDouble(fitness.getValue()));
                 jatekos.setSkills(Double.parseDouble(skills.getValue()));
+                jatekos.setValue(Double.parseDouble(value.getValue())); */
+                jatekos.setLastName(lastName.getValue());
+                jatekos.setFirstName(firstName.getValue());
+                jatekos.setAge(Integer.parseInt(age.getValue()));
+                jatekos.setNationality(nationality.getValue());
+                jatekos.setPosition(position.getValue());
+                jatekos.setCurrentSalary(Double.parseDouble(currSal.getValue()));
+                jatekos.setFitness(Double.parseDouble(fitness.getValue()));
+                jatekos.setSkills(Double.parseDouble(skills.getValue()));
                 jatekos.setValue(Double.parseDouble(value.getValue()));
 
-                    // DB.insertPlayer(jatekos);
-                    // PlayerDao.addPlayer(jatekos);
+                // DB.insertPlayer(jatekos);
+                PlayerDao.addPlayer(jatekos, currentTeam.getValue());
 
             }
         });
@@ -204,21 +209,11 @@ public class PlayerView extends VerticalLayout implements View {
             @Override
             public void buttonClick(ClickEvent event) {
 
-                Players jatekos = new Players();
+                Player jatekos = new Player();
                 // jatekos.setFirst_name(firstName.getValue());
-                jatekos.setLast_name(lastName.getValue());
+                jatekos.setLastName(lastName.getValue());
 
-                try {
-                    try {
-                        DB.removePlayer(jatekos);
-
-                        // TODO db.insert
-                    } catch (IOException ex) {
-                        Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } catch (SQLException ex) {
-                    Logger.getLogger(MyUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                PlayerDao.removePlayer(jatekos);
             }
         });
         addComponent(button2);

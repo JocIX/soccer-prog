@@ -18,7 +18,7 @@ public class Team implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private String name;
     private String nationality;
     private double strength;
@@ -37,6 +37,16 @@ public class Team implements Serializable {
 
     public Team(long id) {
         this.id = id;
+    }
+
+    public Team(Long id, String name, String nationality, double strength, double squadValue, Coach coach, Owner owner) {
+        this.id = id;
+        this.name = name;
+        this.nationality = nationality;
+        this.strength = strength;
+        this.squadValue = squadValue;
+        this.coach = coach;
+        this.owner = owner;
     }
 
     public long getId() {
